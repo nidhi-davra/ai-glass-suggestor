@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# Virtual Glasses App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## View and try-on glasses with AI suggestion
+<video src="public/glass-suggestion.mp4" controls width="720"></video>
 
-## Available Scripts
+## Manage glasses catalog
+<video src="public/glass-catalog.mp4" controls width="720"></video>
 
-In the project directory, you can run:
+A React + Express (SQLite) app for virtual eyeglasses try-on and a small catalog manager.
 
-### `npm start`
+## Prerequisites
+- Node.js 18+ and npm
+- (Optional, for AI analysis on catalog uploads) OpenAI API key
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Setup
+1) Install root dependencies:
+```
+npm install
+```
+2) Install server dependencies:
+```
+cd server && npm install && cd ..
+```
+3) Configure environment (at project root):
+```
+# .env
+OPENAI_API_KEY=your_api_key_here   # required only for AI analysis on /catalog
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Run (development)
+Run client and server together:
+```
+npm run dev
+```
+- Client: `http://localhost:3000`
+- API server: `http://localhost:4000`
 
-### `npm test`
+## App routes
+- `/` – Virtual Try-On
+  - Upload a front-facing photo
+  - App detects your face shape and overlays the selected frames
+  - “Suggestions by AI” toggle filters frames by your detected shape (local filter)
+- `/catalog` – Catalog Manager
+  - Upload new frame images (immediately saved to the DB)
+  - Auto-analyze newly uploaded frames to populate `recommendedFor` and `styles` (requires `OPENAI_API_KEY`)
+  - Delete items from the catalog
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Notes
+- Data is stored in a local SQLite file at `server/data.sqlite` (created automatically on first run).
+- If `OPENAI_API_KEY` is not set, uploads still work but AI analysis on `/catalog` will be disabled.
