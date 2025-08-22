@@ -10,6 +10,8 @@ export default function ImageUploader({ onImageSelected }) {
       const url = URL.createObjectURL(file);
       onImageSelected(url);
     }
+    // allow re-selecting the same file again
+    e.target.value = "";
   };
 
   return (

@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Ignore server node_modules
-/server/node_modules/
+**/node_modules/
+.env

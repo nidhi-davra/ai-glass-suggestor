@@ -27,9 +27,18 @@ function App() {
 
   const refreshSuggestionsForShape = (shape) => {
     const baseList = Array.isArray(catalog) ? catalog : [];
-    const sugg = showOnlyAISuggestions && shape
-      ? baseList.filter((g) => g.recommendedFor?.includes(shape))
-      : getSuggestionsForShape(shape, baseList);
+    const lcShape = typeof shape === 'string' ? shape.toLowerCase().trim() : shape;
+    const normalize = (s) => String(s || '').toLowerCase().trim();
+    let sugg;
+    if (showOnlyAISuggestions && lcShape) {
+      sugg = baseList.filter((g) => (g.recommendedFor || []).some((s) => normalize(s) === lcShape));
+      if (sugg.length === 0) {
+        // graceful fallback to all items when no matches
+        sugg = baseList;
+      }
+    } else {
+      sugg = getSuggestionsForShape(lcShape, baseList);
+    }
     setSuggestions(sugg);
     const keep = sugg.find((g) => g.id === selectedGlasses?.id);
     const nextSelected = keep || sugg[0] || null;
@@ -156,6 +165,21 @@ function App() {
     overlayImgRef.current.onload = draw;
     overlayImgRef.current.src = g.src;
   };
+
+  // Ensure re-detection on new image selection
+  useEffect(() => {
+    if (imageSrc) {
+      setLandmarks(null);
+      setFaceShape(null);
+    }
+    return () => {
+      // Revoke object URL if using blob URL
+      if (imageSrc && imageSrc.startsWith('blob:')) {
+        try { URL.revokeObjectURL(imageSrc); } catch {}
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageSrc]);
 
   return (
     <div className="max-w-6xl mx-auto p-4">
