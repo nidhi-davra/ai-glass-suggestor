@@ -1,10 +1,17 @@
 # Virtual Glasses App
 
 ## View and try-on glasses with AI suggestion
-<video src="public/glass-suggestion.mp4" controls width="720"></video>
+
+![Glasses suggestions by AI](public/glass-suggestion.gif)
 
 ## Manage glasses catalog
-<video src="public/glass-catalog.mp4" controls width="720"></video>
+
+![Catalog management](public/glass-catalog.gif)
+
+## Full videos
+
+- [Full demo: Glasses suggestions (MP4)](public/glass-suggestion.mp4)
+- [Full demo: Catalog management (MP4)](public/glass-catalog.mp4)
 
 A React + Express (SQLite) app for virtual eyeglasses try-on and a small catalog manager.
 
